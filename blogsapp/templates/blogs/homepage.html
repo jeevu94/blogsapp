@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{%block title%} Sign Up {%endblock%}
+
+{% block content %}
+
+<table class="table text-center">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">{% trans "Title" %}</th>
+      <th scope="col">{% trans "Description" %}</th>
+      <th scope="col">{% trans "Author" %}</th>
+      <th scope="col" width="20%">{% trans "Actions" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if blogs %}
+    {% for blog in blogs %}
+    <tr>
+        <th>{{ forloop.counter }}</th>
+        {% if lang == 'en' %}
+            <td>{{ blog.title|title|striptags }}</td>
+            <td>{{ blog.description|truncatechars:20|striptags  }}</td>
+        {% else %}
+            <td>{{ blog.ta_title|striptags }}</td>
+            <td>{{ blog.ta_description|truncatechars:20|striptags  }}</td>
+        {% endif %}
+        <td>{{ blog.author.name }}</td>
+        <td>
+            <a type="button" class="btn btn-primary" href="{% url 'blog:blog_detail_view' blog.slug %}">
+                <i class="fa-solid fa-eye"></i>
+            </a>
+            {% if request.user.can_access_admin_panel %}
+            <a type="button" class="btn btn-warning" href="{% url 'blog:update_blog_view' blog.slug %}">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  {% else %}
+  <tr>
+    <th colspan="5" class="text-center"> There are no blogs yet </th>
+  </tr>
+  {% endif %}
+  </tbody>
+</table>
+
+<div class="row">
+    {% for blog in blogs %}
+    <div class="col-lg-3">
+        <div class="card h-100" style="width: 18rem;">
+            {% if blog.cover_image %}
+            <img src="{{ blog.cover_image.url }}" class="card-img-top" alt="blog image" style="height: 15rem;">
+            {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect></svg>
+            {% endif %}
+            <div class="card-body">
+                {% if lang == 'en' %}
+                <h5 class="card-title">{{ blog.title|title|striptags   }}</h5>
+                <p class="card-text">{{ blog.description|truncatechars:20|striptags  }}</p>
+                {% else %}
+                <h5 class="card-title">{{ blog.ta_title|title|safe|escape }}</h5>
+                <p class="card-text">{{ blog.ta_description|truncatechars:20|striptags   }}</p>
+                {% endif %}
+                <p class="card-text"><strong>{% trans "Author" %} - </strong> {{ blog.author.name }}</p>
+                <div class="card-footer">
+                    <small>
+                    <a type="button" class="btn btn-primary"
+                       href="{% url 'blog:blog_detail_view' blog.slug %}">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    {% if request.user.can_access_admin_panel %}
+                    <a type="button" class="btn btn-warning"
+                       href="{% url 'blog:update_blog_view' blog.slug %}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    {% endif %}
+                        </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

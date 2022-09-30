@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %} Write Blog {% endblock %}
+{% block content %}
+
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'blog:homepage_view' %}">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+      {% if blog.slug %}
+    <div class="d-flex">
+        <a class="navbar-brand btn btn-warning" href="{% url 'blog:blog_detail_view' blog.slug %}">
+                <i class="fa-solid fa-eye"></i>
+        </a>
+    </div>
+      {% endif %}
+  </div>
+</nav>
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.cover_image|as_crispy_field }}
+
+    <h3>{% trans "English" %}</h3> <br>
+    {{ form.title|as_crispy_field }}
+    {{ form.description|as_crispy_field }}
+    <br>
+    <h3>{% trans "Tamil" %}</h3> <br>
+    {{ form.ta_title|as_crispy_field }}
+    {{ form.ta_description|as_crispy_field }}
+
+    {% include 'includes/form_errors.html' %}
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<script>
+    tinyMCE.init({
+      selector: "#id_description, #id_ta_description",
+    });
+</script>
+
+{% endblock %}
