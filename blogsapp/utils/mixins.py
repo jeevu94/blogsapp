@@ -8,7 +8,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormMixin, FormView, UpdateView
-from werkzeug.exceptions import NotFound  # noqa
+
+# from werkzeug.exceptions import NotFound  # noqa
 
 
 def get_model_name(model):
@@ -44,7 +45,7 @@ class AppViewMixin:
         user = self.get_user()
         return user if user and user.is_authenticated else fallback
 
-    def get_object(self, exception=NotFound, identifier="pk"):
+    def get_object(self, exception, identifier="pk"):
         """
         Suppose you want to list data based on other model. This
         is a centralized function to do the same.
