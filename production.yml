@@ -29,8 +29,8 @@ services:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
     image: blogsapp_production_postgres
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - production_postgres_data:/var/lib/postgresql/data:Z
       - production_postgres_data_backups:/backups:z
