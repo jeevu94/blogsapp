@@ -20,8 +20,8 @@ services:
       - ./.envs/.production/.postgres
     ports:
       - "80:80"
-    networks:
-      - djangonetwork
+#    networks:
+#      - djangonetwork
     command: /start
 
   postgres:
@@ -34,8 +34,11 @@ services:
       - production_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.production/.postgres
-    networks:
-      - djangonetwork
+    ports:
+      - "5432:22"
+
+#    networks:
+#      - djangonetwork
 
 #  nginx:
 #    build: ./compose/production/nginx
@@ -72,6 +75,6 @@ services:
 #      - "0.0.0.0:80:80"
 #      - "0.0.0.0:443:443"
 
-networks:
-  djangonetwork:
-    driver: bridge
+#networks:
+#  djangonetwork:
+#    driver: bridge
