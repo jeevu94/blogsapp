@@ -6,6 +6,9 @@ volumes:
   production_traefik: {}
 
 services:
+  redis:
+    image: redis:6
+
   django:
     build:
       context: .
@@ -22,18 +25,18 @@ services:
       - "80:80"
     command: /start
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
-    image: blogsapp_production_postgres
-    volumes:
-      - production_postgres_data:/var/lib/postgresql/data:Z
-      - production_postgres_data_backups:/backups:z
-    env_file:
-      - ./.envs/.production/.postgres
-    ports:
-      - "5433:5432"
+#  postgres:
+#    build:
+#      context: .
+#      dockerfile: ./compose/production/postgres/Dockerfile
+#    image: blogsapp_production_postgres
+#    volumes:
+#      - production_postgres_data:/var/lib/postgresql/data:Z
+#      - production_postgres_data_backups:/backups:z
+#    env_file:
+#      - ./.envs/.production/.postgres
+#    ports:
+#      - "5433:5432"
 
 #  nginx:
 #    build: ./compose/production/nginx
@@ -44,9 +47,6 @@ services:
 ##      - static:/static
 #    depends_on:
 #      - django
-
-  redis:
-    image: redis:6
 
 #  awscli:
 #    build:
