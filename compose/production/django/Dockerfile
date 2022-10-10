@@ -78,4 +78,6 @@ RUN chown django:django ${APP_HOME}
 
 USER django
 
-ENTRYPOINT ["/entrypoint"]
+export DATABASE_URL="postgres://postgres:demo123@localhost:5433/blogs"
+
+#ENTRYPOINT ["/entrypoint"]
